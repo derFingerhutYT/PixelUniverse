@@ -1,1 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Universe - Build Your World</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+        }
+
+        header {
+            text-align: center;
+            padding: 80px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 4rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.5s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .download-btn {
+            display: inline-block;
+            padding: 20px 50px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .download-btn:hover::before {
+            left: 100%;
+        }
+
+        .features {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: rotate 4s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #4ecdc4;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .creator-section {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 80px 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .creator-info {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .creator-name {
+            font-size: 2rem;
+            color: #4ecdc4;
+            margin-bottom: 10px;
+        }
+
+        .studio-name {
+            font-size: 1.5rem;
+            color: #ff6b6b;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(0, 0, 0, 0.6);
+        }
+
+        .pixel-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 0;
+            background-image: 
+                repeating-linear-gradient(0deg, rgba(255,255,255,0.1) 0px, transparent 1px, transparent 10px, rgba(255,255,255,0.1) 11px),
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.1) 0px, transparent 1px, transparent 10px, rgba(255,255,255,0.1) 11px);
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .tagline {
+                font-size: 1.2rem;
+            }
+            
+            .download-btn {
+                padding: 15px 30px;
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="pixel-bg"></div>
+    <div class="stars"></div>
+    
+    <div class="container">
+        <header>
+            <h1 class="logo">PIXEL UNIVERSE</h1>
+            <p class="tagline">Build, Create, Explore - Your World Awaits</p>
+            <a href="#download" class="download-btn">🚀 DOWNLOAD NOW</a>
+        </header>
+
+        <section class="features">
+            <h2 class="section-title">Endless Possibilities</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">🏗️</span>
+                    <h3 class="feature-title">Build & Create</h3>
+                    <p>Construct amazing worlds block by block. Your imagination is the only limit in this sandbox universe.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">💬</span>
+                    <h3 class="feature-title">Social Gaming</h3>
+                    <p>Chat with friends, meet new players, and collaborate on incredible projects together online.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🎨</span>
+                    <h3 class="feature-title">Customize Everything</h3>
+                    <p>Design your character, buy unique clothing, and make everything truly yours with endless customization options.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🌍</span>
+                    <h3 class="feature-title">Explore Worlds</h3>
+                    <p>Discover incredible worlds created by other players, or venture into procedurally generated landscapes.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">⚒️</span>
+                    <h3 class="feature-title">Mine & Craft</h3>
+                    <p>Gather resources, mine precious materials, and craft tools to enhance your building experience.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <span class="feature-icon">🎮</span>
+                    <h3 class="feature-title">Online Multiplayer</h3>
+                    <p>Join a thriving community of builders and creators in persistent online worlds.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="creator-section">
+            <div class="creator-info">
+                <h2 class="section-title">Meet the Creator</h2>
+                <p class="creator-name">derFingerhutYT</p>
+                <p class="studio-name">Grounded Studios</p>
+                <p style="margin-top: 20px; font-size: 1.1rem; opacity: 0.9;">
+                    Passionate about creating immersive gaming experiences that bring players together in creative and meaningful ways.
+                </p>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2025 Pixel Universe by Grounded Studios. All rights reserved.</p>
+            <p style="margin-top: 10px; opacity: 0.7;">Join the pixel revolution today!</p>
+        </footer>
+    </div>
+
+    <script>
+        // Create animated stars
+        function createStars() {
+            const starsContainer = document.querySelector('.stars');
+            const starCount = 100;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 3 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Animate feature cards on scroll
+        function animateOnScroll() {
+            const cards = document.querySelectorAll('.feature-card');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            cards.forEach((card) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(50px)';
+                card.style.transition = 'all 0.6s ease';
+                observer.observe(card);
+            });
+        }
+
+        // Add floating effect to logo
+        function floatingLogo() {
+            const logo = document.querySelector('.logo');
+            let start = null;
+            
+            function animate(timestamp) {
+                if (!start) start = timestamp;
+                const progress = timestamp - start;
+                
+                const offset = Math.sin(progress * 0.002) * 10;
+                logo.style.transform = `translateY(${offset}px)`;
+                
+                requestAnimationFrame(animate);
+            }
+            
+            requestAnimationFrame(animate);
+        }
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            animateOnScroll();
+            floatingLogo();
+        });
+
+        // Smooth scrolling for download button
+        document.querySelector('.download-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            // Here you would typically trigger the actual download
+            alert('Download would start here! 🚀\n\nThis is where you would link to your game download.');
+        });
+    </script>
+</body>
+</html>
